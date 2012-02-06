@@ -1,6 +1,7 @@
 package utcompling.scalalogic.util.subprocess
 
 import scala.sys.process._
+import utcompling.scalalogic.util.FileUtils
 
 object SubprocessTests {
     def main(args: Array[String]): Unit = {

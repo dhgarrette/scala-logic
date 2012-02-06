@@ -3,6 +3,7 @@ package utcompling.scalalogic.discourse.impl
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import scala.collection.mutable.ListBuffer
+import utcompling.scalalogic.util.FileUtils
 
 object CandcDiscourseParserTests {
     def main(args: Array[String]): Unit = {

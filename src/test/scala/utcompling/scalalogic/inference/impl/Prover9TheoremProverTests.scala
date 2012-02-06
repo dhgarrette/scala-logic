@@ -1,6 +1,7 @@
 package utcompling.scalalogic.inference.impl
 
 import utcompling.scalalogic.fol.expression.parse.FolLogicParser
+import utcompling.scalalogic.util.FileUtils
 
 object Prover9TheoremProverTests {
     def main(args: Array[String]): Unit = {

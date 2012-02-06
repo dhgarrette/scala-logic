@@ -1,5 +1,7 @@
 package utcompling.scalalogic.discourse.candc.call.impl
 
+import utcompling.scalalogic.util.FileUtils
+
 object BoxerImplTests {
     def main(args: Array[String]): Unit = {
 

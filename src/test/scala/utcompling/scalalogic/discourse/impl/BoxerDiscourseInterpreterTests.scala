@@ -4,6 +4,7 @@ import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.impl.P
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import utcompling.scalalogic.drt.expression.DrtExpression
+import utcompling.scalalogic.util.FileUtils
 
 object BoxerDiscourseInterpreterTests {
     def main(args: Array[String]): Unit = {

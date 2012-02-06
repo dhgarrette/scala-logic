@@ -2,6 +2,7 @@ package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call._
 import scala.collection.mutable.ListBuffer
+import utcompling.scalalogic.util.FileUtils
 
 object CandcImplTests {
     def main(args: Array[String]): Unit = {
