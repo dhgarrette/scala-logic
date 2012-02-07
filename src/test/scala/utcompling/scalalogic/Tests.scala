@@ -4,10 +4,12 @@ import utcompling.scalalogic.top.expression.Variable
 import utcompling.scalalogic.util.Counter
 import utcompling.scalalogic.fol.expression.parse.FolLogicParser
 import utcompling.scalalogic.fol.expression._
+import org.junit.Test
 
-object tests {
+class Tests {
 
-  def main(args: Array[String]) = {
+  @Test
+  def test() {
 
     val vP = Variable("P")
     println(vP)

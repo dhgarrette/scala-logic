@@ -1,9 +1,12 @@
 package utcompling.scalalogic.top.expression
 
 import scala.collection.mutable.MapBuilder
+import org.junit.Test
 
-object VariableTests {
-  def main(args : Array[String]) : Unit = {
+class VariableTests {
+  
+  @Test
+  def test() {
       
       println(Variable("a") == Variable("a"))
       println(Variable("a").equals(Variable("a")))

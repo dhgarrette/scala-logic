@@ -1,9 +1,11 @@
 package utcompling.scalalogic.discourse.boxer.drs.expression
 
-object DrtExpressionTests {
-  def main(args : Array[String]) : Unit = {
-      
-      
-      
+import org.junit.Test
+
+class DrtExpressionTests {
+
+  @Test
+  def test() {
+
   }
 }

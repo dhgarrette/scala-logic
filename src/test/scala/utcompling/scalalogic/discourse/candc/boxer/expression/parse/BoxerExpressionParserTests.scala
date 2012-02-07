@@ -1,13 +1,16 @@
 package utcompling.scalalogic.discourse.candc.boxer.expression.parse
 
 import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.impl.Boxer2DrtExpressionInterpreter
+import org.junit.Test
 
-object BoxerExpressionParserTests {
-    def main(args: Array[String]): Unit = {
+class BoxerExpressionParserTests {
 
-        val p = new BoxerExpressionParser().parse(_)
+  @Test
+  def test() {
 
-        var drs = List("""drs(
+    val p = new BoxerExpressionParser().parse(_)
+
+    var drs = List("""drs(
                             [],
                             [
                               [1001]:imp(
@@ -30,7 +33,7 @@ object BoxerExpressionParserTests {
                             ]
                           )""",
 
-            """alfa(
+      """alfa(
                             top,
                             drs(
                               [[1001]:x0,[1005]:x1],
@@ -60,7 +63,7 @@ object BoxerExpressionParserTests {
                             )
                           )""",
 
-            """alfa(
+      """alfa(
                                top,
                                drs(
                                  [[1001]:x0],
@@ -106,24 +109,24 @@ object BoxerExpressionParserTests {
                                  )
                                )
                              )""",
-            "alfa(top,drs([[1001]:x0],[[1001]:named(x0,john,per,0)]),drs([[1002]:e1],[[1002]:pred(e1,leave,v,0),[1002]:rel(e1,x0,agent,0)]))",
-            "drs([[1001]:x0,[1003]:e1],[[1002]:pred(x0,dog,n,0),[1003]:pred(e1,walk,v,0),[1003]:rel(e1,x0,agent,0)])",
-            "drs([[1001]:x0],[[1002]:pred(x0,left,n,0),[]:pred(x0,topic,a,1)])")
+      "alfa(top,drs([[1001]:x0],[[1001]:named(x0,john,per,0)]),drs([[1002]:e1],[[1002]:pred(e1,leave,v,0),[1002]:rel(e1,x0,agent,0)]))",
+      "drs([[1001]:x0,[1003]:e1],[[1002]:pred(x0,dog,n,0),[1003]:pred(e1,walk,v,0),[1003]:rel(e1,x0,agent,0)])",
+      "drs([[1001]:x0],[[1002]:pred(x0,left,n,0),[]:pred(x0,topic,a,1)])")
 
-        for (d <- drs) {
-            var drsFlat = """[ \t\n]+""".r.replaceAllIn(d, "")
-            println(drsFlat)
-            println(p(d))
-            var reparsed = p(d).toString
-            var error = false
-            if (drsFlat != reparsed) {
-                println((drsFlat zip reparsed).map { case (a, b) => (if (a == b || a - 1 == b) ' ' else '^') }.mkString(""))
-                error = true
-            }
-            println(error)
-            new Boxer2DrtExpressionInterpreter().interpret(p(d)).pprint()
-            new Boxer2DrtExpressionInterpreter().interpret(p(d)).simplify.pprint()
-            println()
-        }
+    for (d <- drs) {
+      var drsFlat = """[ \t\n]+""".r.replaceAllIn(d, "")
+      println(drsFlat)
+      println(p(d))
+      var reparsed = p(d).toString
+      var error = false
+      if (drsFlat != reparsed) {
+        println((drsFlat zip reparsed).map { case (a, b) => (if (a == b || a - 1 == b) ' ' else '^') }.mkString(""))
+        error = true
+      }
+      println(error)
+      new Boxer2DrtExpressionInterpreter().interpret(p(d)).pprint()
+      new Boxer2DrtExpressionInterpreter().interpret(p(d)).simplify.pprint()
+      println()
     }
+  }
 }

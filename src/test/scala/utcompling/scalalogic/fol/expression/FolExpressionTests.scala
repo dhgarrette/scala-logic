@@ -1,9 +1,12 @@
 package utcompling.scalalogic.fol.expression
 
 import utcompling.scalalogic.top.expression.Variable
+import org.junit.Test
 
-object FolExpressionTests {
-    def main(args : Array[String]) : Unit = {
+class FolExpressionTests {
+  
+  @Test
+    def test() {
 
         val P = FolVariableExpression(Variable("P"))
         val Q = FolVariableExpression(Variable("Q"))
