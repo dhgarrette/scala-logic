@@ -59,9 +59,9 @@ class BoxerDiscourseInterpreter[T](
       line match {
         case IdLineRe(discourseId, drsId) =>
           lines.next.trim match { case SemLineRe(drsId2) => require(drsId == drsId2, "%s != %s".format(drsId, drsId2)) }
-          require(lines.next.trim.startsWith("[word("))
-          require(lines.next.trim.startsWith("[pos("))
-          require(lines.next.trim.startsWith("[ne("))
+          lines.next.trim match { case l if l.startsWith("[word(") => }
+          lines.next.trim match { case l if l.startsWith("[pos(") => }
+          lines.next.trim match { case l if l.startsWith("[") => }
           val drsInput = lines.next.trim.stripSuffix(").")
 
           val cleanDiscourseId = singleQuotedRe.findFirstMatchIn(discourseId).map(_.group(1)).getOrElse(discourseId)
