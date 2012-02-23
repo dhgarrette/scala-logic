@@ -33,7 +33,7 @@ class SubprocessCallable(val binary: String) {
                 case None => {
                     val out = new StringBuilder
                     val err = new StringBuilder
-                    val exitcode = Process(binary +: args) ! ProcessLogger(out.append(_).append("\n"), err.append(_).append("\n"))
+                    val exitcode = Process(binary :: args) ! ProcessLogger(out.append(_).append("\n"), err.append(_).append("\n"))
                     (exitcode, out.result, err.result)
                 }
                 case Some(input) => {

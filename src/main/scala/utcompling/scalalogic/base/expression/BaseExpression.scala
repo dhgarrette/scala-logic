@@ -95,6 +95,13 @@ trait BaseExpression[T <: BaseExpression[T]] {
         }
         return result.asInstanceOf[T]
     }
+    
+    /**
+     * Is this expression an atom?
+     */
+    def isAtom() =
+        false
+
 
     def makeVariableExpression(variable: Variable): T
 

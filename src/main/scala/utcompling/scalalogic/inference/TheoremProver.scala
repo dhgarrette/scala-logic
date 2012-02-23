@@ -6,7 +6,7 @@ trait TheoremProver[T, R] {
      * Return the proof, or None if the proof failed
      */
     final def prove(goal: T): Option[R] =
-        prove(List(), None, false)
+        prove(List(), Some(goal), false)
 
     /**
      * Return the proof, or None if the proof failed
