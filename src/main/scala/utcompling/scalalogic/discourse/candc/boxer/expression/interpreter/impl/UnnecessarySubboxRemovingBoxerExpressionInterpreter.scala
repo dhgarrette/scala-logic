@@ -36,16 +36,16 @@ class UnnecessarySubboxRemovingBoxerExpressionInterpreter extends BoxerExpressio
         val refVars = refs.map(_._2).toSet
         val (resultConds, resultVars) = conds.map(e => this.crush(e, propVarsInScope | refVars)).unzip
         val allResultVars = resultVars.fold(Set())(_ | _)
-        val (crushedConds, prunedPropVars) =
+        val (additionalRefs, crushedConds, prunedPropVars) =
           resultConds.map {
-            case e @ BoxerProp(discId, indices, variable, drs) if allResultVars(variable) && indices.isEmpty =>
-              (drs, Set[BoxerVariable](variable))
+            case BoxerProp(discId, indices, variable, drs) if allResultVars(variable) && indices.isEmpty =>
+              (drs.refs, drs.conds, Set[BoxerVariable](variable))
             case e =>
-              (e, Set[BoxerVariable]())
-          }.unzip
+              (List[(List[BoxerIndex], BoxerVariable)](), List(e), Set[BoxerVariable]())
+          }.unzip3
         val prunedPropVarsFlat = prunedPropVars.flatten.toSet
         val filteredRefs = refs.filterNot(r => prunedPropVarsFlat(r._2))
-        (BoxerDrs(filteredRefs, crushedConds), allResultVars -- refVars)
+        (BoxerDrs(filteredRefs ++ additionalRefs.flatten, crushedConds.flatten), allResultVars -- refVars)
 
       case BoxerEq(discId, indices, first, second) =>
         (BoxerEq(discId, indices, first, second), Set(first, second))
