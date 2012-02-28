@@ -19,9 +19,9 @@ trait BaseExpression[T <: BaseExpression[T]] {
         }
     }
 
-    def visit[S, R](function: T => S, combinator: List[S] => R): R
+    def visit[S](function: T => S, combinator: List[S] => S): S
 
-    def visitStructured[S, R](function: T => S, combinator: List[Any] => R) =
+    def visitStructured[S](function: T => S, combinator: List[Any] => S) =
         this.visit(function, combinator)
 
     /**

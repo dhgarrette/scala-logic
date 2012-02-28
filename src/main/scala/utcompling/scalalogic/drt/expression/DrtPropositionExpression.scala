@@ -7,10 +7,10 @@ import utcompling.scalalogic.util.StringUtils
 case class DrtPropositionExpression(val variable: Variable, val drs: DrtExpression)
     extends DrtExpression {
 
-    override def visit[S, R](function: DrtExpression => S, combinator: List[S] => R): R =
+    override def visit[S](function: DrtExpression => S, combinator: List[S] => S): S =
         combinator(List(function(this.drs)))
 
-    override def visitStructured[S, R](function: DrtExpression => S, combinator: List[Any] => R) =
+    override def visitStructured[S](function: DrtExpression => S, combinator: List[Any] => S) =
         combinator(List(this.variable, function(this.drs)))
 
     override def replace(variable: Variable, expression: DrtExpression, replace_bound: Boolean = false, alpha_convert: Boolean = true): DrtExpression =

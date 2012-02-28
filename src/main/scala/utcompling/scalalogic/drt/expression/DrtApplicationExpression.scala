@@ -11,10 +11,10 @@ case class DrtApplicationExpression(val function: DrtExpression, val argument: D
     extends DrtExpression
     with BaseApplicationExpression[DrtExpression] {
 
-    override def visit[S, R](function: DrtExpression => S, combinator: List[S] => R) =
+    override def visit[S](function: DrtExpression => S, combinator: List[S] => S) =
         combinator(List(function(this.function), function(this.argument)) ++ this.consequent.map(function))
 
-    override def visitStructured[S, R](function: DrtExpression => S, combinator: List[Any] => R) =
+    override def visitStructured[S](function: DrtExpression => S, combinator: List[Any] => S) =
         combinator(List(function(this.function), function(this.argument), this.consequent.map(function)))
 
     override def fol(): FolExpression = {

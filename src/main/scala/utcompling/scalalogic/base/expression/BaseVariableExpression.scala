@@ -6,10 +6,10 @@ trait BaseVariableExpression[T <: BaseExpression[T]] extends BaseExpression[T] {
 
     val variable: Variable
 
-    override def visit[S, R](function: T => S, combinator: List[S] => R) =
+    override def visit[S](function: T => S, combinator: List[S] => S) =
         throw new NotDefinedError("VariableExpression.visit() is not defined")
     
-    override def visitStructured[S, R](function: T => S, combinator: List[Any] => R) =
+    override def visitStructured[S](function: T => S, combinator: List[Any] => S) =
     	combinator(List(this.variable))
 
     override def replace(variable: Variable, expression: T, replace_bound: Boolean = false, alpha_convert: Boolean = true) =

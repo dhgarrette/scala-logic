@@ -8,13 +8,13 @@ case class FolApplicationExpression(override val function: FolExpression, overri
     extends FolExpression
     with BaseApplicationExpression[FolExpression] {
 
-    override def visit[S, R](function: FolExpression => S, combinator: List[S] => R) =
+    override def visit[S](function: FolExpression => S, combinator: List[S] => S) =
         combinator(List(function(this.function), function(this.argument)))
 
     override def simplify(): FolExpression = {
         val function = this.function.simplify()
         val argument = this.argument.simplify()
-        return function match {
+        function match {
             case le: FolLambdaExpression => {
                 le.term.replace(le.variable, argument, false, true).simplify()
             }

@@ -10,7 +10,7 @@ trait BaseBinaryExpression[T <: BaseExpression[T]] extends BaseExpression[T] {
     val second: T
     val operator: String
 
-    override def visit[S, R](function: T => S, combinator: List[S] => R) =
+    override def visit[S](function: T => S, combinator: List[S] => S) =
         combinator(List(function(this.first), function(this.second)))
 
     override def toString() =

@@ -10,10 +10,10 @@ case class DrtConcatenationExpression(override val first: DrtExpression, overrid
 
     override val operator = DrtTokens.DRS_CONC
 
-    override def visit[S, R](function: DrtExpression => S, combinator: List[S] => R): R =
+    override def visit[S](function: DrtExpression => S, combinator: List[S] => S): S =
         combinator(List(function(this.first), function(this.second)) ++ this.consequent.map(function))
 
-    override def visitStructured[S, R](function: DrtExpression => S, combinator: List[Any] => R): R =
+    override def visitStructured[S](function: DrtExpression => S, combinator: List[Any] => S): S =
         combinator(List(function(this.first), function(this.second), this.consequent.map(function)))
 
     /**

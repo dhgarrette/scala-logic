@@ -62,10 +62,10 @@ case class DrtBoxExpression(refs: List[Variable], conds: List[DrtExpression], co
         else
             this.refs.toSet
 
-    override def visit[S, R](function: DrtExpression => S, combinator: List[S] => R) =
+    override def visit[S](function: DrtExpression => S, combinator: List[S] => S) =
         combinator(this.conds.map(function) ++ this.consequent.map(function))
 
-    override def visitStructured[S, R](function: DrtExpression => S, combinator: List[Any] => R) =
+    override def visitStructured[S](function: DrtExpression => S, combinator: List[Any] => S) =
         combinator(List(this.refs, this.conds.map(function), this.consequent.map(function)))
 
     override def eliminateEquality(): DrtBoxExpression = {

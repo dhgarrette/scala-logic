@@ -15,10 +15,10 @@ trait BaseVariableBinderExpression[T <: BaseExpression[T]] extends BaseExpressio
     def alphaConvert(newvar: Variable): BaseVariableBinderExpression[T] =
         this.construct(List(newvar, this.term.replace(this.variable, this.makeVariableExpression(newvar), true))).asInstanceOf[BaseVariableBinderExpression[T]]
 
-    override def visit[S, R](function: T => S, combinator: List[S] => R) =
+    override def visit[S](function: T => S, combinator: List[S] => S) =
         combinator(List(function(this.term)))
 
-    override def visitStructured[S, R](function: T => S, combinator: List[Any] => R) =
+    override def visitStructured[S](function: T => S, combinator: List[Any] => S) =
         combinator(List(this.variable, function(this.term)))
 
     override def replace(variable: Variable, expression: T, replace_bound: Boolean = false, alphaConvert: Boolean = true): T = {
