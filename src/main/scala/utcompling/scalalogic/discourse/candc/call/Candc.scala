@@ -17,7 +17,7 @@ trait Candc {
      * @param inputs: Input sentences to parse as a single discourse
      * @param discourseId: An identifier
      */
-    final def parseMultisentence(input: List[String], args: Map[String, String] = Map(), discourseId: Option[String] = None, model: Option[String] = None, verbose: Boolean = false): String = 
+    final def parseMultisentence(input: Seq[String], args: Map[String, String] = Map(), discourseId: Option[String] = None, model: Option[String] = None, verbose: Boolean = false): String = 
          this.batchParseMultisentence(List(input), args, discourseId.map(List(_)), model, verbose)
 
     /**
@@ -26,8 +26,8 @@ trait Candc {
      * @param inputs: Input sentences to parse as individual discourses
      * @param discourseIds: Identifiers
      */
-    final def batchParse(inputs: List[String], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String = {
-        return this.batchParseMultisentence(inputs.map(List(_)), args, discourseIds, model, verbose)
+    final def batchParse(inputs: Seq[String], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String = {
+        return this.batchParseMultisentence(inputs.map(Seq(_)), args, discourseIds, model, verbose)
     }
 
     /**
@@ -36,6 +36,6 @@ trait Candc {
      * @param inputs: Input discourses to parse
      * @param discourseIds: Identifiers
      */
-    def batchParseMultisentence(inputs: List[List[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String
+    def batchParseMultisentence(inputs: Seq[Seq[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String
 
 }

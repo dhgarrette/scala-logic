@@ -78,7 +78,7 @@ id('0', [1]).
   //    }
 
   class FakeCandc(output: String) extends Candc {
-    override def batchParseMultisentence(inputs: List[List[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String =
+    override def batchParseMultisentence(inputs: Seq[Seq[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String =
       this.output
   }
 

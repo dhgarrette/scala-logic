@@ -13,14 +13,14 @@ class CandcImpl(
     def this(binary: String, defaultArgs: Map[String, String] = Map()) =
         this(binary, pathjoin(binary.dropRight(5), "../models"), defaultArgs)
 
-    override def batchParseMultisentence(inputs: List[List[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String = {
+    override def batchParseMultisentence(inputs: Seq[Seq[String]], args: Map[String, String] = Map(), discourseIds: Option[Seq[String]] = None, model: Option[String] = None, verbose: Boolean = false): String = {
         val newDiscourseIds = discourseIds.getOrElse((0 until inputs.length).map(_.toString))
         val defaultArgs = Map[String, String](
             "--models" -> pathjoin(this.modelsPath, model.getOrElse("")))
         return this.call(Some(this.makeInput(inputs, newDiscourseIds)), (this.defaultArgs ++ defaultArgs ++ args).flatMap { case (k, v) => List(k, v) }.toList, verbose)
     }
 
-    private def makeInput(inputs: List[List[String]], discourseIds: Seq[String]): String = {
+    private def makeInput(inputs: Seq[Seq[String]], discourseIds: Seq[String]): String = {
         require(inputs.length == discourseIds.length, "Must have the same number of inputs and discourseIds")
         val discourses = for ((d, id) <- (inputs zip discourseIds)) yield "<META>'%s'".format(id) +: d
         return discourses.flatten.mkString("\n")
