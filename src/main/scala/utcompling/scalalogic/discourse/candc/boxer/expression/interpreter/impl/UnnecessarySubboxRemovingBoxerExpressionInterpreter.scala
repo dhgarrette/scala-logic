@@ -93,8 +93,8 @@ class UnnecessarySubboxRemovingBoxerExpressionInterpreter extends BoxerExpressio
 
       case _ =>
         e.visit(this.findPropAndNonPropVars,
-          (x: List[Set[BoxerVariable]]) => x.foldLeft(Set[BoxerVariable]())(_ | _),
-          Set())
+          (x: List[Set[BoxerVariable]]) => x.foldLeft(Set.empty[BoxerVariable])(_ | _),
+          Set.empty[BoxerVariable])
     }
 
 }
