@@ -33,7 +33,9 @@ trait DiscourseInterpreter[T] {
      * @param discourseIds: Identifiers
      */
     final def batchInterpret(inputs: List[String], discourseIds: Option[List[String]] = None, question: Boolean = false, verbose: Boolean = false): List[Option[T]] = {
-        return this.batchInterpretMultisentence(inputs.map(List(_)), discourseIds, question, verbose)
+        val ds = this.batchInterpretMultisentence(inputs.map(List(_)), discourseIds, question, verbose)
+        require(ds.length == inputs.length, "len(inputs) = %d, len(ds) = %d".format(inputs.length, ds.length))
+        ds
     }
 
     /**
