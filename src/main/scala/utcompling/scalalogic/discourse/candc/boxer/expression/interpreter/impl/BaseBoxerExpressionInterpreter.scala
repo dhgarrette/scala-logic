@@ -28,6 +28,14 @@ abstract class BaseBoxerExpressionInterpreter[T] extends BoxerExpressionInterpre
                 interpretBoxerProp(discId, indices, variable, drs)
             case BoxerRel(discId, indices, event, variable, name, sense) =>
                 interpretBoxerRel(discId, indices, event, variable, name, sense)
+            case BoxerCard(discId, indices, variable, num, sense) =>
+                interpretBoxerCard(discId, indices, variable, num, sense)
+            case BoxerOr(discId, indices, first, second) =>
+                interpretBoxerOr(discId, indices, first, second)
+            case BoxerTimex(discId, indices, variable, timeExp) =>
+                interpretBoxerTimex(discId, indices, variable, timeExp)
+            case BoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day) =>
+            	interpretBoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day)
         }
 
     protected def interpretBoxerAlfa(variable: BoxerVariable, first: BoxerExpression, second: BoxerExpression): T
@@ -40,5 +48,8 @@ abstract class BaseBoxerExpressionInterpreter[T] extends BoxerExpressionInterpre
     protected def interpretBoxerPred(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, name: String, pos: String, sense: Int): T
     protected def interpretBoxerProp(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, drs: BoxerExpression): T
     protected def interpretBoxerRel(discId: String, indices: List[BoxerIndex], event: BoxerVariable, variable: BoxerVariable, name: String, sense: Int): T
-
+    protected def interpretBoxerCard(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, num: String, sense: String): T
+    protected def interpretBoxerOr(discId: String, indices: List[BoxerIndex], first: BoxerExpression, second: BoxerExpression): T
+    protected def interpretBoxerTimex(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, timeExp: BoxerExpression): T
+    protected def interpretBoxerDate(indicesPol: List[BoxerIndex], pol: String, indicesYear: List[BoxerIndex], year: String, indicesMonth: List[BoxerIndex], month: String, indicesDay:List[BoxerIndex], day: String): T
 }

@@ -28,6 +28,8 @@ class BoxerExpressionParser(discourseId: String = "0") extends LogicParser[Boxer
             this.parseLam()
         else if (tok0 == "lam")
             this.parseApp()
+        else if (tok0 == "date")
+        	this.parseDate()
         else if (tok0 == "[") {
             val predIdx = this.findToken("]") + 2
             val pred = this.getToken(predIdx)
@@ -45,10 +47,19 @@ class BoxerExpressionParser(discourseId: String = "0") extends LogicParser[Boxer
                 this.parseRel()
             else if (pred == "prop")
                 this.parseProp()
+            else if (pred == "card")
+            	this.parseCard()
+            else if (pred == "whq")
+            	this.parseWhq()
+            else if (pred == "or")
+            	this.parseOr()
+            else if (pred == "timex")
+            	this.parseTimex()
+
             else
-                throw new UnexpectedTokenException(predIdx, Some(pred), List("not", "imp", "eq", "pred", "rel", "named", "prop"))
+                throw new UnexpectedTokenException(predIdx, Some(pred), List("not", "imp", "eq", "pred", "rel", "named", "prop", "card", "whq", "or", "timex"))
         } else
-            throw new UnexpectedTokenException(this.getCurrentIndex, Some(tok0), List("drs", "alfa", "merge", "smerge"))
+            throw new UnexpectedTokenException(this.getCurrentIndex, Some(tok0), List("drs", "alfa", "merge", "smerge", "date"))
     }
 
     protected def parseDrs(): BoxerExpression = {
@@ -245,6 +256,88 @@ class BoxerExpressionParser(discourseId: String = "0") extends LogicParser[Boxer
             case e => throw new UnexpectedTokenException(this.getCurrentIndex - 1, Some(this.getToken(-1)), message = Some("Expected an Integer."), nested = e)
         }
     }
+    protected def parseCard(): BoxerExpression = {
+        val indices = this.parseIndexList()
+        this.assertNextToken(":")
+        this.assertNextToken("card")
+        this.assertNextToken("(")
+        val variable = this.parseVariable()
+        this.assertNextToken(",")
+        val num = this.nextToken()
+        this.assertNextToken(",")
+        val sense = this.nextToken()
+        this.assertNextToken(")")
+        return BoxerCard(this.discourseId, indices, variable, num, sense)
+    }
+    protected def parseWhq(): BoxerExpression = {
+        //val pred = this.nextToken
+        val pred = this.parseIndexList()
+        this.assertNextToken(":")
+        this.assertNextToken("whq")
+        this.assertNextToken("(")
+        this.assertNextToken("[")
+        if (this.nextToken != "]"){
+             this.assertNextToken(":")
+             var answerType2 = this.nextToken()
+             this.assertNextToken("]")
+        }
+       
+        this.assertNextToken(",")
+        val first = this.doParseExpression()
+        this.assertNextToken(",")
+        val recipient = this.parseVariable()
+        this.assertNextToken(",")
+        val second = this.doParseExpression()
+        this.assertNextToken(")")
+        return BoxerMerge("whq", first, second)
+    }
+    
+    protected def parseOr(): BoxerExpression = {
+        val indices = this.parseIndexList()
+        this.assertNextToken(":")
+        this.assertNextToken("or")
+        this.assertNextToken("(")
+        val first = this.doParseExpression()
+        this.assertNextToken(",")
+        val second = this.doParseExpression()
+        this.assertNextToken(")")
+        return BoxerOr(this.discourseId, indices, first, second)
+    }
+    protected def parseTimex(): BoxerExpression = {
+        val indices = this.parseIndexList()
+        this.assertNextToken(":")
+        this.assertNextToken("timex")
+        this.assertNextToken("(")
+        val variable = this.parseVariable()
+        this.assertNextToken(",")
+        val timeExp = this.doParseExpression()
+        this.assertNextToken(")")
+        return BoxerTimex(this.discourseId, indices, variable, timeExp)
+    }
+    protected def parseDate(): BoxerExpression = {
+        this.assertNextToken("date")
+        this.assertNextToken("(")
+        val indicesPol = this.parseIndexList()
+        this.assertNextToken(":")
+        this.assertNextToken("(")
+        val pol = this.nextToken()
+        this.assertNextToken(")")
+        this.assertNextToken(",")
+        val indicesYear = this.parseIndexList()
+        this.assertNextToken(":")
+        val year = this.nextToken()
+        this.assertNextToken(",")
+        val indicesMonth = this.parseIndexList()
+        this.assertNextToken(":")
+        val month = this.nextToken()
+        this.assertNextToken(",")
+        val indicesDay = this.parseIndexList()
+        this.assertNextToken(":")
+        val day = this.nextToken()
+        this.assertNextToken(")")
 
+        return BoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day)
+    
+    }
 }
     

@@ -34,5 +34,16 @@ class PassthroughBoxerExpressionInterpreter extends BaseBoxerExpressionInterpret
 
     override protected def interpretBoxerRel(discId: String, indices: List[BoxerIndex], event: BoxerVariable, variable: BoxerVariable, name: String, sense: Int) =
         BoxerRel(discId, indices, event, variable, name, sense)
-
+        
+    override protected def interpretBoxerCard(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, num: String, sense: String) =
+        BoxerCard(discId, indices, variable, num, sense)
+    
+    override protected def interpretBoxerOr(discId: String, indices: List[BoxerIndex], first: BoxerExpression, second: BoxerExpression) =
+        BoxerOr(discId, indices, interpret(first), interpret(second))
+        
+    override protected def interpretBoxerTimex(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, timeExp: BoxerExpression) =
+    	BoxerTimex(discId, indices, variable, interpret(timeExp))
+    	
+    override protected def interpretBoxerDate(indicesPol: List[BoxerIndex], pol: String, indicesYear: List[BoxerIndex], year: String, indicesMonth: List[BoxerIndex], month: String, indicesDay:List[BoxerIndex], day: String) =
+    	BoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day)
 }
