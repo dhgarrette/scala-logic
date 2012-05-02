@@ -4,17 +4,17 @@ import utcompling.scalalogic.top.expression.Variable
 
 case class BoxerVariable(name: String) extends BoxerExpression with Ordered[BoxerVariable] {
 
-    def compare(that: BoxerVariable): Int =
-        this.name.compare(that.name)
+  def compare(that: BoxerVariable): Int =
+    this.name.compare(that.name)
 
-    def visit[S, R](function: BoxerExpression => S, combinator: List[S] => R, default: R): R = 
-        throw new NotDefinedError("BoxerVariable.visit() is not implemented")
+  def visit[R](function: BoxerExpression => R, combinator: List[R] => R, default: R): R =
+    sys.error("BoxerVariable.visit() is not implemented")
 
-    def visitConstruct[S, R](function: BoxerExpression => BoxerExpression): BoxerExpression = 
-        throw new NotDefinedError("BoxerVariable.visitConstruct() is not implemented")
+  def visitConstruct(function: BoxerExpression => BoxerExpression): BoxerExpression =
+    sys.error("BoxerVariable.visitConstruct() is not implemented")
 
-    override def toString() =
-        name
+  override def toString() =
+    name
 
 }
 

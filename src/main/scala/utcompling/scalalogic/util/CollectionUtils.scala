@@ -9,8 +9,26 @@ import scala.collection.GenTraversableOnce
 import scala.collection.TraversableLike
 import scala.collection.GenMap
 import scala.collection.mutable
+import scala.collection.GenIterable
+import scala.collection.GenIterableLike
 
 object CollectionUtils {
+
+  //////////////////////////////////////////////////////
+  // toTuple2: (T,T)
+  // toTuple3: (T,T,T)
+  // toTuple4: (T,T,T,T)
+  // toTuple5: (T,T,T,T,T)
+  //   - Convert this sequence to a tuple
+  //////////////////////////////////////////////////////
+
+  class Enrich_toTuple_Seq[A](elements: Seq[A]) {
+    def toTuple2 = elements match { case Seq(a, b) => (a, b) }
+    def toTuple3 = elements match { case Seq(a, b, c) => (a, b, c) }
+    def toTuple4 = elements match { case Seq(a, b, c, d) => (a, b, c, d) }
+    def toTuple5 = elements match { case Seq(a, b, c, d, e) => (a, b, c, d, e) }
+  }
+  implicit def enriched_toTuple_Seq[A](elements: Seq[A]) = new Enrich_toTuple_Seq(elements)
 
   //////////////////////////////////////////////////////
   // countCompare(p: A => Boolean, count: Int): Int
@@ -101,13 +119,13 @@ object CollectionUtils {
   implicit def enriched_splitAt_Iterator[A](self: Iterator[A]) = new Enriched_splitAt_Iterator(self)
 
   //////////////////////////////////////////////////////
-  // sumMap[B: Numeric](f: A => B): B
+  // sumBy[B: Numeric](f: A => B): B
   //   - Map a numeric-producing function over each item and sum the results 
   //   - Functionally equivalent to:
   //         this.map(f).sum
   //////////////////////////////////////////////////////
 
-  class Enriched_sumMap_GenTraversableOnce[A](self: GenTraversableOnce[A]) {
+  class Enriched_sumBy_GenTraversableOnce[A](self: GenTraversableOnce[A]) {
     /**
      * Map a numeric-producing function over each item and sum the results.
      *
@@ -116,7 +134,7 @@ object CollectionUtils {
      * @param f	A function that produces a Numeric
      * @return the sum of the results after applications of f
      */
-    def sumMap[B](f: A => B)(implicit num: Numeric[B]): B = {
+    def sumBy[B](f: A => B)(implicit num: Numeric[B]): B = {
       val itr = self.toIterator
       var accum = num.zero
       while (itr.hasNext)
@@ -124,7 +142,7 @@ object CollectionUtils {
       return accum
     }
   }
-  implicit def enriched_sumMap_GenTraversableOnce[A](self: GenTraversableOnce[A]) = new Enriched_sumMap_GenTraversableOnce(self)
+  implicit def enriched_sumBy_GenTraversableOnce[A](self: GenTraversableOnce[A]) = new Enriched_sumBy_GenTraversableOnce(self)
 
   //////////////////////////////////////////////////////
   // mapTo[B](f: A => B): Repr[B]
@@ -195,7 +213,8 @@ object CollectionUtils {
           if (self.hasNext) {
             if (thatItr.hasNext) true
             else throw new RuntimeException("Attempting to zipEqual collections of different lengths.")
-          } else {
+          }
+          else {
             if (thatItr.hasNext) throw new RuntimeException("Attempting to zipEqual collections of different lengths.")
             else false
           }
@@ -238,7 +257,7 @@ object CollectionUtils {
      * Slide over this collection to produce pairs.
      */
     def sliding2[B >: A](): Iterator[(B, B)] =
-      self.sliding(2).map { case Seq(a, b) => (a, b) }
+      self.sliding(2).map(_.toTuple2)
   }
   implicit def enriched_sliding2_Iterator[A](self: Iterator[A]) = new Enriched_sliding2_Iterator(self)
 
@@ -280,7 +299,7 @@ object CollectionUtils {
   // mapValuesStrict(f: U => R): Repr[(T,R)]
   //   - In a collection of pairs, map a function over the second item of each pair.
   //   - Functionally equivalent to:
-  //         this.map{case (k,v) => k -> f(v)}
+  //         this.map { case (k,v) => k -> f(v) }
   //////////////////////////////////////////////////////
 
   class Enriched_mapValuesStrict_GenTraversableLike[T, U, Repr <: GenTraversable[(T, U)]](self: GenTraversableLike[(T, U), Repr]) {
@@ -493,21 +512,85 @@ object CollectionUtils {
   implicit def enrich_unzip_Iterator[T, U](self: Iterator[(T, U)]) = new Enriched_unzip_Iterator(self)
 
   //////////////////////////////////////////////////////
-  // flattenOver(): Iterator[(A, B)]
+  // ungroup(): Iterator[(A, B)]
   //   - For a map with collections for values, return an iterator of pairs
   //     where each key is paired with each item in its value collection
   //////////////////////////////////////////////////////
 
-  class Enrich_flattenOver_GenTraversableOnce[A, B](self: GenMap[A, GenTraversableOnce[B]]) {
+  class Enrich_ungroup_GenTraversableOnce[A, B](self: GenMap[A, GenTraversableOnce[B]]) {
     /**
      * For a map with collections for values, return an iterator of pairs
      * where each key is paired with each item in its value collection.
      *
      * @return an iterator of pairs
      */
-    def flattenOver() = self.iterator.flatMap { case (a, bs) => bs.toIterator.map((a, _)) }
+    def ungroup() = self.iterator.flatMap { case (a, bs) => bs.toIterator.map((a, _)) }
   }
-  implicit def enrich_flattenOver_GenTraversableOnce[A, B](self: GenMap[A, GenTraversableOnce[B]]) = new Enrich_flattenOver_GenTraversableOnce(self)
+  implicit def enrich_ungroup_GenTraversableOnce[A, B](self: GenMap[A, GenTraversableOnce[B]]) = new Enrich_ungroup_GenTraversableOnce(self)
+
+  //////////////////////////////////////////////////////
+  // takeSub[GenIterable[B]](n: Int): Repr[GenIterable[B]]
+  //   - Take iterables from this collection until the total number of 
+  //     elements in the taken items is about to exceed `n`.  The total number
+  //     of elements will be less than or equal to `n`.
+  //////////////////////////////////////////////////////
+
+  class Enriched_takeSub_GenTraversableLike[A, R <: GenIterable[A], Repr <: GenTraversable[GenIterable[A]]](self: GenTraversableLike[GenIterableLike[A, R], Repr]) {
+    /**
+     * Take iterables from this collection until the total number of elements
+     * in the taken items is about to exceed `n`.  The total number of
+     * elements will be less than or equal to `n`.
+     *
+     * @param n	the maximum number of sub-elements to take
+     * @return the new collection
+     */
+    def takeSub[That](n: Int)(implicit bf: CanBuildFrom[Repr, R, That]): That = {
+      val b = bf(self.asInstanceOf[Repr])
+      for (x <- enriched_takeSub_Iterator(self.toIterator).takeSub(n)) b += x
+      b.result
+    }
+  }
+  implicit def enrich_takeSub_GenTraversableLike[A, R <: GenIterable[A], Repr <: GenTraversable[GenIterable[A]]](self: GenTraversableLike[GenIterableLike[A, R], Repr]) = new Enriched_takeSub_GenTraversableLike(self)
+
+  class Enriched_takeSub_Iterator[A, R <: GenIterable[A]](self: Iterator[GenIterableLike[A, R]]) {
+    /**
+     * Take iterables from this collection until the total number of elements
+     * in the taken items is about to exceed `n`.  The total number of
+     * elements will be less than or equal to `n`.
+     *
+     * @param n	the maximum number of sub-elements to take
+     * @return the new collection
+     */
+    def takeSub(n: Int): Iterator[R] = {
+      if (self.isEmpty) {
+        self.asInstanceOf[Iterator[R]]
+      }
+      else {
+        new Iterator[R] {
+          private var nextElement: R = self.next.asInstanceOf[R]
+          private var total: Int = nextElement.size
+
+          override def hasNext = total <= n
+
+          override def next = {
+            if (hasNext) {
+              val x = nextElement
+              if (self.hasNext) {
+                nextElement = self.next.asInstanceOf[R]
+                total += nextElement.size
+              }
+              else
+                total = n + 1
+              x
+            }
+            else
+              throw new NoSuchElementException("next on empty iterator")
+          }
+        }
+      }
+    }
+  }
+  implicit def enriched_takeSub_Iterator[A, R <: GenIterable[A]](self: Iterator[GenIterableLike[A, R]]) = new Enriched_takeSub_Iterator(self)
 
   //////////////////////////////////////////////////////
   // +:(elem: B): Iterator[B]
@@ -557,9 +640,98 @@ object CollectionUtils {
   }
   implicit def enrich_avg_GenTraversableOnce[A](self: GenTraversableOnce[A]) = new Enrich_avg_GenTraversableOnce(self)
 
+  class Enrich_avg_Int_GenTraversableOnce(self: GenTraversableOnce[Int]) {
+    /**
+     * Find the average (mean) of this collection of numbers.
+     *
+     * @return the average (mean)
+     */
+    def avg = {
+      val (total, count) = self.toIterator.foldLeft((0, 0)) {
+        case ((total, count), x) => (total + x, count + 1)
+      }
+      total.toDouble / count
+    }
+  }
+  implicit def enrich_avg_Int_GenTraversableOnce(self: GenTraversableOnce[Int]) = new Enrich_avg_Int_GenTraversableOnce(self)
+
+  //////////////////////////////////////////////////////
+  // normalize(): Repr[A]
+  //   - Normalize this collection of numbers by dividing each by the sum
+  //////////////////////////////////////////////////////
+
+  class Enriched_normalize_GenTraversableLike[A, Repr <: GenTraversable[A]](self: GenTraversableLike[A, Repr]) {
+    /**
+     * Normalize this collection of numbers by dividing each by the sum
+     *
+     * @return normalized values
+     */
+    def normalize[That](implicit num: Fractional[A], bf: CanBuildFrom[Repr, A, That]) = {
+      val b = bf(self.asInstanceOf[Repr])
+      b.sizeHint(self.size)
+      val total = self.sum
+      for (x <- self) b += num.div(x, total)
+      b.result
+    }
+  }
+  implicit def enrich_normalize_GenTraversableLike[A, Repr <: GenTraversable[A]](self: GenTraversableLike[A, Repr]) = new Enriched_normalize_GenTraversableLike(self)
+
+  class Enriched_normalize_Int_GenTraversableLike[Repr <: GenTraversable[Int]](self: GenTraversableLike[Int, Repr]) {
+    /**
+     * Normalize this collection of numbers by dividing each by the sum
+     *
+     * @return normalized values
+     */
+    def normalize[That](implicit bf: CanBuildFrom[Repr, Double, That]) = {
+      val b = bf(self.asInstanceOf[Repr])
+      b.sizeHint(self.size)
+      val total = self.sum.toDouble
+      for (x <- self) b += x / total
+      b.result
+    }
+  }
+  implicit def enrich_normalize_Int_GenTraversableLike[Repr <: GenTraversable[Int]](self: GenTraversableLike[Int, Repr]) = new Enriched_normalize_Int_GenTraversableLike(self)
+
+  //////////////////////////////////////////////////////
+  // normalizeValues(): Repr[(T,U)]
+  //   - Normalize this values in this collection of pairs
+  //////////////////////////////////////////////////////
+
+  class Enriched_normalizeValues_GenTraversableLike[T, U, Repr <: GenTraversable[(T, U)]](self: GenTraversableLike[(T, U), Repr]) {
+    /**
+     * Normalize this values in this collection of pairs
+     *
+     * @return a collection of pairs
+     */
+    def normalizeValues[That](implicit num: Fractional[U], bf: CanBuildFrom[Repr, (T, U), That]) = {
+      val b = bf(self.asInstanceOf[Repr])
+      b.sizeHint(self.size)
+      val total = self.map(_._2).sum
+      for ((k, v) <- self) b += k -> num.div(v, total)
+      b.result
+    }
+  }
+  implicit def enrich_normalizeValues_GenTraversableLike[T, U, Repr <: GenTraversable[(T, U)]](self: GenTraversableLike[(T, U), Repr]) = new Enriched_normalizeValues_GenTraversableLike(self)
+
+  class Enriched_normalizeValues_Int_GenTraversableLike[T, Repr <: GenTraversable[(T, Int)]](self: GenTraversableLike[(T, Int), Repr]) {
+    /**
+     * Normalize this values in this collection of pairs
+     *
+     * @return a collection of pairs
+     */
+    def normalizeValues[That](implicit bf: CanBuildFrom[Repr, (T, Double), That]) = {
+      val b = bf(self.asInstanceOf[Repr])
+      b.sizeHint(self.size)
+      val total = self.map(_._2).sum.toDouble
+      for ((k, v) <- self) b += k -> (v / total)
+      b.result
+    }
+  }
+  implicit def enrich_normalizeValues_Int_GenTraversableLike[T, Repr <: GenTraversable[(T, Int)]](self: GenTraversableLike[(T, Int), Repr]) = new Enriched_normalizeValues_Int_GenTraversableLike(self)
+
   //  class ReversableIterableMap[A, B](map: Map[A, GenTraversableOnce[B]]) {
   //    def reverse(): Map[B, GenTraversableOnce[A]] =
-  //      map.flattenOver.groupBy(_._2).mapValues(_.map(_._1)).iterator.toMap
+  //      map.ungroup.groupBy(_._2).mapValues(_.map(_._1)).iterator.toMap
   //  }
   //  implicit def map2reversableIterableMap[A, B](map: Map[A, GenTraversableOnce[B]]) = new ReversableIterableMap(map)
   //
