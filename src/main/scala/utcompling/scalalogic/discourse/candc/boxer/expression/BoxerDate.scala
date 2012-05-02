@@ -2,10 +2,10 @@ package utcompling.scalalogic.discourse.candc.boxer.expression
 
 case class BoxerDate(indicesPol: List[BoxerIndex], pol: String, indicesYear: List[BoxerIndex], year: String, indicesMonth: List[BoxerIndex], month: String, indicesDay:List[BoxerIndex], day: String) extends BoxerExpression {
 
-    def visit[S, R](function: BoxerExpression => S, combinator: List[S] => R, default: R): R = 
+    def visit[R](function: BoxerExpression => R, combinator: List[R] => R, default: R): R = 
         default
 
-    def visitConstruct[S, R](function: BoxerExpression => BoxerExpression): BoxerExpression = 
+    def visitConstruct(function: BoxerExpression => BoxerExpression): BoxerExpression = 
         BoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day)
 
     def ::(index: Int) = BoxerDate(indicesPol, pol, indicesYear, year, indicesMonth, month, indicesDay, day)

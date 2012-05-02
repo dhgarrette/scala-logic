@@ -2,10 +2,10 @@ package utcompling.scalalogic.discourse.candc.boxer.expression
 
 case class BoxerCard(discId: String, indices: List[BoxerIndex], variable: BoxerVariable, num: String, sense: String) extends BoxerExpression {
 
-    def visit[S, R](function: BoxerExpression => S, combinator: List[S] => R, default: R): R = 
+    def visit[R](function: BoxerExpression => R, combinator: List[R] => R, default: R): R = 
         default
 
-    def visitConstruct[S, R](function: BoxerExpression => BoxerExpression): BoxerExpression = 
+    def visitConstruct(function: BoxerExpression => BoxerExpression): BoxerExpression = 
         BoxerCard(discId, indices, variable, num, sense)
 
     def ::(index: Int) = BoxerCard(discId, List(BoxerIndex(index)), variable, num, sense)
