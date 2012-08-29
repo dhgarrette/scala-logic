@@ -1,7 +1,7 @@
 package utcompling.scalalogic.inference.impl
 
 import utcompling.scalalogic.fol.expression.parse.FolLogicParser
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import org.junit.Test
 
 class Prover9TheoremProverTests {

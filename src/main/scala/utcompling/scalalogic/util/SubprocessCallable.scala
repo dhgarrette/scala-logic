@@ -2,6 +2,8 @@ package utcompling.scalalogic.util
 
 import scala.sys.process._
 
+import opennlp.scalabha.util.FileUtils
+
 class SubprocessCallable(val binary: String) {
 
     /**

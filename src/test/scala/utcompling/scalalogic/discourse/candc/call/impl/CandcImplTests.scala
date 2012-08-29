@@ -2,7 +2,7 @@ package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call._
 import scala.collection.mutable.ListBuffer
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import org.junit.Test
 
 class CandcImplTests {

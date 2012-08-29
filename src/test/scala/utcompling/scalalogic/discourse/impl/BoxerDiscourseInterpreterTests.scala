@@ -4,7 +4,7 @@ import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.impl.P
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import utcompling.scalalogic.drt.expression.DrtExpression
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import org.junit.Test
 import org.junit.Test
 

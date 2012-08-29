@@ -1,8 +1,7 @@
 package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call.Boxer
-import utcompling.scalalogic.util.FileUtils
-import utcompling.scalalogic.util.FileUtils.{ using, openForWrite }
+import opennlp.scalabha.util.FileUtils
 import utcompling.scalalogic.util.SubprocessCallable
 
 class BoxerImpl(override val binary: String, defaultArgs: Map[String, String] = Map()) extends SubprocessCallable(binary) with Boxer {
@@ -10,7 +9,7 @@ class BoxerImpl(override val binary: String, defaultArgs: Map[String, String] = 
     override def callBoxer(candcOut: String, args: Map[String, String] = Map(), verbose: Boolean = false): String = {
         val tempFilename = FileUtils.mktemp(prefix = "boxer-", suffix = ".in")
 
-        using(openForWrite(tempFilename)) { f =>
+        FileUtils.writeUsing(tempFilename) { f =>
             f.write(candcOut)
         }
 

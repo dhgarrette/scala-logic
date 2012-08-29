@@ -3,7 +3,7 @@ package utcompling.scalalogic.discourse.impl
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import scala.collection.mutable.ListBuffer
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import org.junit.Test
 
 class CandcDiscourseParserTests {

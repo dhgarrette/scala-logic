@@ -1,7 +1,7 @@
 package utcompling.scalalogic.util.subprocess
 
 import scala.sys.process._
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import org.junit.Test
 
 class SubprocessTests {

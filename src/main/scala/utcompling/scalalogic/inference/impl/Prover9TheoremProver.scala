@@ -4,7 +4,7 @@ import utcompling.scalalogic.inference.TheoremProver
 import utcompling.scalalogic.fol.expression._
 import utcompling.scalalogic.top.expression._
 import utcompling.scalalogic.util.SubprocessCallable
-import utcompling.scalalogic.util.FileUtils
+import opennlp.scalabha.util.FileUtils
 import scala.collection.mutable.ListBuffer
 
 class Prover9TheoremProver(override val binary: String, timeout: Int, errorOnExceed: Boolean)
