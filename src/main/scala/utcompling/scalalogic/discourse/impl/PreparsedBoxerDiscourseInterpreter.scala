@@ -16,14 +16,12 @@ import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.BoxerE
 import utcompling.scalalogic.discourse.candc.boxer.expression.parse.BoxerExpressionParser
 
 /**
- * Discourse Interpreter that simply reads from a file
+ * Discourse Interpreter that simply interprets pre-parsed strings
  */
-class SerializedFileReadingDiscourseInterpreter[T](
-  filename: String,
+class PreparsedBoxerDiscourseInterpreter[T](
+  interpretations: List[Option[String]],
   boxerExpressionInterpreter: BoxerExpressionInterpreter[T] = new Boxer2DrtExpressionInterpreter())
   extends DiscourseInterpreter[T] {
-
-  val SomeRe = """Some\((.*)\)""".r
 
   /**
    * Hook to which all interpret calls delegate.
@@ -32,12 +30,12 @@ class SerializedFileReadingDiscourseInterpreter[T](
     val newDiscourseIds = discourseIds.getOrElse((0 until inputs.length).map(_.toString).toList)
     require(inputs.length == newDiscourseIds.length)
 
-    (FileUtils.readLines(filename) zipSafe newDiscourseIds)
+    (interpretations zipSafe newDiscourseIds)
       .map {
-        case (SomeRe(drsString), discourseId) =>
+        case (Some(drsString), discourseId) =>
           val lineParser = new BoxerExpressionParser(discourseId)
           Some(boxerExpressionInterpreter.interpret(lineParser.parse(drsString)))
-        case ("None", _) => None
+        case (None, _) => None
       }
       .toList
   }
