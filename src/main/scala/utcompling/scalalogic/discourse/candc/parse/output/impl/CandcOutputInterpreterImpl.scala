@@ -2,6 +2,7 @@ package utcompling.scalalogic.discourse.candc.parse.output.impl
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.MapBuilder
+import opennlp.scalabha.util.CollectionUtils._
 import utcompling.scalalogic.discourse.candc.parse.output.CandcOutputInterpreter
 
 class CandcOutputInterpreterImpl extends CandcOutputInterpreter[Discourse] {
@@ -46,7 +47,7 @@ class CandcOutputInterpreterImpl extends CandcOutputInterpreter[Discourse] {
                     val cleanDiscourseId = singleQuotedRe.findFirstMatchIn(discourseId).map(_.group(1)).getOrElse(discourseId)
                     val sentenceIds: Array[Int] = rawSentenceIds.split(",").map(_.trim.toInt)
                     require(sentenceIds.length == rawSentences.length, "require(sentenceIds.length=%s == rawSentences.length=%s)".format(sentenceIds.length, rawSentences.length))
-                    val sentences = for ((i, s) <- (sentenceIds.toList zip rawSentences)) yield Sentence(i, s)
+                    val sentences = for ((i, s) <- (sentenceIds.toList zipSafe rawSentences)) yield Sentence(i, s)
                     discourseDict += cleanDiscourseId -> Some(Discourse(cleanDiscourseId, sentences))
                     rawSentences.clear
                 }

@@ -1,6 +1,7 @@
 package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call._
+import opennlp.scalabha.util.CollectionUtils._
 import opennlp.scalabha.util.FileUtils
 import opennlp.scalabha.util.FileUtils.pathjoin
 import utcompling.scalalogic.util.SubprocessCallable
@@ -22,7 +23,7 @@ class CandcImpl(
 
     private def makeInput(inputs: Seq[Seq[String]], discourseIds: Seq[String]): String = {
         require(inputs.length == discourseIds.length, "Must have the same number of inputs and discourseIds")
-        val discourses = for ((d, id) <- (inputs zip discourseIds)) yield "<META>'%s'".format(id) +: d
+        val discourses = for ((d, id) <- (inputs zipSafe discourseIds)) yield "<META>'%s'".format(id) +: d
         return discourses.flatten.mkString("\n")
     }
 
