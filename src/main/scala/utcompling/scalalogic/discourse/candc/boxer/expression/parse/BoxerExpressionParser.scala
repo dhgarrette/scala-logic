@@ -264,10 +264,8 @@ class BoxerExpressionParser(discourseId: String = "0") extends LogicParser[Boxer
         val variable = this.parseVariable()
         this.assertNextToken(",")
         val num = this.nextToken()
-        this.assertNextToken(",")
-        val sense = this.nextToken()
         this.assertNextToken(")")
-        return BoxerCard(this.discourseId, indices, variable, num, sense)
+        return BoxerCard(this.discourseId, indices, variable, num)
     }
     protected def parseWhq(): BoxerExpression = {
         //val pred = this.nextToken
