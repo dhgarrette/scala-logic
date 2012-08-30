@@ -13,7 +13,7 @@ trait BaseExpression[T <: BaseExpression[T]] {
         val constructors = this.getClass.getConstructors()
         require(constructors.length == 1, "Argument runtime types must select exactly one constructor.  %d constructors found for %s".format(constructors.length, this.getClass))
         try {
-            return constructors.first.newInstance(parts.asInstanceOf[List[java.lang.Object]]: _*).asInstanceOf[T]
+            return constructors.head.newInstance(parts.asInstanceOf[List[java.lang.Object]]: _*).asInstanceOf[T]
         } catch {
             case e => throw new RuntimeException("Failure calling constructor for %s with arguments %s".format(this.getClass, parts), e)
         }
@@ -21,7 +21,7 @@ trait BaseExpression[T <: BaseExpression[T]] {
 
     def visit[S](function: T => S, combinator: List[S] => S): S
 
-    def visitStructured[S](function: T => S, combinator: List[Any] => S) =
+    def visitStructured[S](function: T => S, combinator: List[Any] => S): S =
         this.visit(function, combinator)
 
     /**
