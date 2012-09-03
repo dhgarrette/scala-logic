@@ -3,6 +3,7 @@ package utcompling.scalalogic.discourse.candc.parse.output.impl
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.MapBuilder
 import opennlp.scalabha.util.CollectionUtils._
+import opennlp.scalabha.util.CollectionUtil._
 import utcompling.scalalogic.discourse.candc.parse.output.CandcOutputInterpreter
 
 class CandcOutputInterpreterImpl extends CandcOutputInterpreter[Discourse] {

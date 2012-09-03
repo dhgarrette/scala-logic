@@ -2,6 +2,7 @@ package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call._
 import opennlp.scalabha.util.CollectionUtils._
+import opennlp.scalabha.util.CollectionUtil._
 import opennlp.scalabha.util.FileUtils
 import opennlp.scalabha.util.FileUtils.pathjoin
 import utcompling.scalalogic.util.SubprocessCallable
