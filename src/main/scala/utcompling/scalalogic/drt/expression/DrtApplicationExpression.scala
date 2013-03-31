@@ -31,10 +31,10 @@ case class DrtApplicationExpression(val function: DrtExpression, val argument: D
     }
 
     override def constants() =
-        super.constants() ++ this.consequent.map(_.constants()).flatten
+        super.constants() ++ this.consequent.map(_.constants()).getOrElse(Set())
 
     override def predicates() =
-        super.predicates() ++ this.consequent.map(_.predicates()).flatten
+        super.predicates() ++ this.consequent.map(_.predicates()).getOrElse(Set())
 
     override def simplify(): DrtExpression = {
         val function = this.function.simplify()
@@ -59,7 +59,7 @@ case class DrtApplicationExpression(val function: DrtExpression, val argument: D
 
     override def getRefs(recursive: Boolean = false) =
         if (recursive)
-            this.function.getRefs(true) ++ this.argument.getRefs(true) ++ this.consequent.map(_.getRefs(true)).flatten
+            this.function.getRefs(true) ++ this.argument.getRefs(true) ++ this.consequent.map(_.getRefs(true)).getOrElse(Set())
         else
             Set()
 

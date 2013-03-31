@@ -50,7 +50,7 @@ case class DrtBoxExpression(refs: List[Variable], conds: List[DrtExpression], co
     }
 
     override def free(): Set[Variable] = {
-        val conds_free = this.conds.flatMap(_.free).toSet ++ this.consequent.map(_.free).flatten
+        val conds_free = this.conds.flatMap(_.free).toSet ++ this.consequent.map(_.free).getOrElse(Set())
         return conds_free -- this.refs.toSet
     }
 
@@ -58,7 +58,7 @@ case class DrtBoxExpression(refs: List[Variable], conds: List[DrtExpression], co
         if (recursive)
             (this.refs ++
                 this.conds.map(_.getRefs(true)).flatten ++
-                this.consequent.map(_.getRefs(true)).flatten).toSet
+                this.consequent.map(_.getRefs(true)).getOrElse(Set())).toSet
         else
             this.refs.toSet
 

@@ -4,7 +4,7 @@ import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.impl.P
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import utcompling.scalalogic.drt.expression.DrtExpression
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 import org.junit.Test
 import org.junit.Test
 
@@ -13,7 +13,7 @@ class BoxerDiscourseInterpreterTests {
   @Test
   def test() {
 
-    val binDir = Some(FileUtils.pathjoin(System.getenv("HOME"), "bin/candc/bin"))
+    val binDir = Some(FileUtil.pathjoin(System.getenv("HOME"), "bin/candc/bin"))
     val candc = CandcImpl.findBinary(binDir)
     val boxer = BoxerImpl.findBinary(binDir)
     val bi = new BoxerDiscourseInterpreter(candc = candc, boxer = boxer)

@@ -2,7 +2,7 @@ package utcompling.scalalogic.util
 
 import scala.sys.process._
 
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 
 class SubprocessCallable(val binary: String) {
 
@@ -60,6 +60,6 @@ class SubprocessCallable(val binary: String) {
 object SubprocessCallable {
 
     def findBinary(binaryName: String, binDir: Option[String] = None, envar: Option[String] = None, verbose: Boolean = false) =
-        new SubprocessCallable(FileUtils.findBinary(binaryName, binDir, envar, verbose))
+        new SubprocessCallable(FileUtil.findBinary(binaryName, binDir, envar))
 
 }

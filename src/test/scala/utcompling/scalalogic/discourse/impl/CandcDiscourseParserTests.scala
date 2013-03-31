@@ -3,7 +3,7 @@ package utcompling.scalalogic.discourse.impl
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import scala.collection.mutable.ListBuffer
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 import org.junit.Test
 
 class CandcDiscourseParserTests {
@@ -27,7 +27,7 @@ id('0', [1, 2]).
 
 """
     println(new CandcDiscourseParser(new FakeCandc(single)).parseMultisentence(List("John is short .", "He is young .")))
-    println(new CandcDiscourseParser(new CandcImpl(FileUtils.pathjoin(System.getenv("HOME"), "bin/candc/bin/candc"))).parse("Every man loves a woman ."))
+    println(new CandcDiscourseParser(new CandcImpl(FileUtil.pathjoin(System.getenv("HOME"), "bin/candc/bin/candc"))).parse("Every man loves a woman ."))
 
   }
 

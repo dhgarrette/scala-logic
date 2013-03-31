@@ -3,7 +3,7 @@ package utcompling.scalalogic.discourse.impl
 import scala.collection.mutable.ListBuffer
 import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.BoxerExpressionInterpreter
 import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.impl.Boxer2DrtExpressionInterpreter
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 import utcompling.scalalogic.base.expression.BaseExpression
 import scala.collection.mutable.MapBuilder
 import utcompling.scalalogic.discourse.DiscourseInterpreter

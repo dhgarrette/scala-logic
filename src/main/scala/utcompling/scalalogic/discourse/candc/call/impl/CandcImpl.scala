@@ -1,10 +1,9 @@
 package utcompling.scalalogic.discourse.candc.call.impl
 
 import utcompling.scalalogic.discourse.candc.call._
-import opennlp.scalabha.util.CollectionUtils._
-import opennlp.scalabha.util.CollectionUtil._
-import opennlp.scalabha.util.FileUtils
-import opennlp.scalabha.util.FileUtils.pathjoin
+import dhg.util.CollectionUtil._
+import dhg.util.FileUtil
+import dhg.util.FileUtil.pathjoin
 import utcompling.scalalogic.util.SubprocessCallable
 
 class CandcImpl(
@@ -33,11 +32,11 @@ class CandcImpl(
 object CandcImpl {
 
     def findBinary(binDir: Option[String] = None, envar: Option[String] = Some("CANDCHOME"), defaultArgs: Map[String, String] = Map(), verbose: Boolean = false) = {
-        new CandcImpl(FileUtils.findBinary("candc", binDir, envar, verbose), defaultArgs = defaultArgs)
+        new CandcImpl(FileUtil.findBinary("candc", binDir, envar), defaultArgs = defaultArgs)
     }
 
     def findBinary(binDir: Option[String], envar: Option[String], modelsPath: String, defaultArgs: Map[String, String], verbose: Boolean) = {
-        new CandcImpl(FileUtils.findBinary("candc", binDir, envar, verbose), modelsPath, defaultArgs)
+        new CandcImpl(FileUtil.findBinary("candc", binDir, envar), modelsPath, defaultArgs)
     }
 
 }

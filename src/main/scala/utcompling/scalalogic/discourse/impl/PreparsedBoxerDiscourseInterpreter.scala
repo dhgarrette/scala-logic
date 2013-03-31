@@ -10,9 +10,8 @@ import utcompling.scalalogic.top.expression._
 import utcompling.scalalogic.discourse.candc.call._
 import utcompling.scalalogic.discourse.candc.call.impl._
 import utcompling.scalalogic.discourse.candc.parse.output.impl._
-import opennlp.scalabha.util.FileUtils
-import opennlp.scalabha.util.CollectionUtils._
-import opennlp.scalabha.util.CollectionUtil._
+import dhg.util.FileUtil
+import dhg.util.CollectionUtil._
 import utcompling.scalalogic.discourse.candc.boxer.expression.interpreter.BoxerExpressionInterpreter
 import utcompling.scalalogic.discourse.candc.boxer.expression.parse.BoxerExpressionParser
 

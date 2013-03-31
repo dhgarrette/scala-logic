@@ -4,7 +4,7 @@ import utcompling.scalalogic.inference.TheoremProver
 import utcompling.scalalogic.fol.expression._
 import utcompling.scalalogic.top.expression._
 import utcompling.scalalogic.util.SubprocessCallable
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 import scala.collection.mutable.ListBuffer
 
 class Prover9TheoremProver(override val binary: String, timeout: Int, errorOnExceed: Boolean)
@@ -102,7 +102,7 @@ class Prover9TheoremProver(override val binary: String, timeout: Int, errorOnExc
 object Prover9TheoremProver {
 
     def findBinary(binDir: Option[String] = None, envar: Option[String] = Some("PROVER9HOME"), timeout: Int = 60, errorOnExceed: Boolean = false, verbose: Boolean = false) =
-        new Prover9TheoremProver(FileUtils.findBinary("prover9", binDir, envar, verbose), timeout, errorOnExceed)
+        new Prover9TheoremProver(FileUtil.findBinary("prover9", binDir, envar), timeout, errorOnExceed)
 
 }
 

@@ -1,7 +1,7 @@
 package utcompling.scalalogic.util.subprocess
 
 import scala.sys.process._
-import opennlp.scalabha.util.FileUtils
+import dhg.util.FileUtil
 import org.junit.Test
 
 class SubprocessTests {
@@ -72,7 +72,7 @@ class SubprocessTests {
       val pb = Process("cat")
       val out = new StringBuilder
       val err = new StringBuilder
-      val exitcode = pb #< new java.io.File(FileUtils.pathjoin(System.getenv("HOME"), "temp")) ! ProcessLogger(out.append(_), err.append(_))
+      val exitcode = pb #< new java.io.File(FileUtil.pathjoin(System.getenv("HOME"), "temp")) ! ProcessLogger(out.append(_), err.append(_))
       println("stdout: " + out.result)
       println("stderr: " + err.result)
       println()
