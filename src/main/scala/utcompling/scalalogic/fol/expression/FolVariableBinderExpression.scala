@@ -19,3 +19,12 @@ abstract class FolVariableBinderExpression(override val operator: String, overri
     }
 
 }
+
+object FolVariableBinderExpression {
+  def unapply(e: FolExpression) = {
+    e match {
+      case vbe: FolVariableBinderExpression => Some((vbe.operator, vbe.variable, vbe.term)) 
+      case _ => None
+    }
+  }
+}
