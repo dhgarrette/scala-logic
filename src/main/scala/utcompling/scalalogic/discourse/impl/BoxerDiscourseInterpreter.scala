@@ -48,21 +48,35 @@ class BoxerDiscourseInterpreter[T](
   }
 
   private def parseBoxerOutput(boxerOut: String): Map[String, Option[T]] = {
+    //println(boxerOut)
+
     val drsDict = new MapBuilder[String, Option[T], Map[String, Option[T]]](Map[String, Option[T]]())
     val singleQuotedRe = """^'(.*)'$""".r
 
     val lines = boxerOut.split("\n").iterator
-    val IdLineRe = """^id\((\S+),\s*(\d+)\)\.$""".r
-    val SemLineRe = """^sem\((\d+),$""".r
+    val IdLineRe = """id\((\S+),\s*(\d+)\)\.""".r
+    val SemLineRe = """sem\((\d+),(.*)\)\.""".r
     for (line <- lines.map(_.trim)) {
       line match {
         case IdLineRe(discourseId, drsId) =>
-          lines.next.trim match { case SemLineRe(drsId2) => require(drsId == drsId2, "%s != %s".format(drsId, drsId2)) }
-          lines.next.trim match { case l if l.startsWith("[word(") => }
-          lines.next.trim match { case l if l.startsWith("[pos(") => }
-          lines.next.trim match { case l if l.startsWith("[") => }
-          val drsInput = lines.next.trim.stripSuffix(").")
+          val SemLineRe(drsId2, semContents) = lines.next.trim
 
+          val drsInput = {
+            var brackets = 0
+            var i = 1
+            while (!(semContents(i) == ']' && brackets == 0)) {
+              semContents.charAt(i) match {
+                case '[' => brackets += 1
+                case ']' => brackets -= 1
+                case _ =>
+              }
+              i += 1
+            }
+            semContents.drop(i + 2)
+          }
+          //println(drsInput)
+
+          assert(drsId == drsId2, "%s != %s".format(drsId, drsId2))
           val cleanDiscourseId = singleQuotedRe.findFirstMatchIn(discourseId).map(_.group(1)).getOrElse(discourseId)
           val parsed = this.parseOutputDrs(drsInput, cleanDiscourseId)
           drsDict += cleanDiscourseId -> Some(this.boxerExpressionInterpreter.interpret(parsed))
