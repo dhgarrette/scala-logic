@@ -8,7 +8,7 @@ class FolLogicParserTests {
   @Test
   def test() {
 
-    val lp = new FolLogicParser()
+    val lp = new FolLogicParser(List.empty)
     println(lp.parse("see(x,y)"))
     println(lp.parse("all x. man(x)"))
     println(lp.parse("all x. (man(x) -> exists y.(woman(y) & love(x,y)))"))

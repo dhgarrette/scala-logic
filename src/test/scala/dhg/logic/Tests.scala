@@ -37,7 +37,7 @@ class Tests {
     println(counter.get)
 
 
-    val lp = new FolLogicParser()
+    val lp = new FolLogicParser(List.empty)
     println(lp.parse("all x. man(x)"))
     println(lp.parse("all x. (man(x) -> exists y. woman(y) & love(x,y))"))
 

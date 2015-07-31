@@ -5,7 +5,19 @@ import scala.collection.mutable.MapBuilder
 import scala.collection.mutable.HashMap
 import scala.collection.SeqView
 
-abstract class LogicParser[T] {
+/**
+ * @param quoteChars
+ * A list of tuples of quote characters.  The 4-tuple is comprised
+ * of the start character, the end character, the escape character, and
+ * a boolean indicating whether the quotes should be included in the
+ * result. Quotes are used to signify that a token should be treated as
+ * atomic, ignoring any special characters within the token.  The escape
+ * character allows the quote end character to be used within the quote.
+ * If True, the boolean indicates that the final token should contain the
+ * quote and escape characters.
+ * This method exists to be overridden
+ */
+abstract class LogicParser[T](quoteChars: List[(Char, Char, Char, Boolean)] = List.empty) {
 
     private var currentIndex = 0
 
@@ -13,19 +25,6 @@ abstract class LogicParser[T] {
         currentIndex
 
     private var buffer = List[String]()
-
-    /**
-     * A list of tuples of quote characters.  The 4-tuple is comprised
-     * of the start character, the end character, the escape character, and
-     * a boolean indicating whether the quotes should be included in the
-     * result. Quotes are used to signify that a token should be treated as
-     * atomic, ignoring any special characters within the token.  The escape
-     * character allows the quote end character to be used within the quote.
-     * If True, the boolean indicates that the final token should contain the
-     * quote and escape characters.
-     * This method exists to be overridden
-     */
-    protected val quoteChars = List[(Char, Char, Char, Boolean)]()
 
     /**
      * Parse the expression.

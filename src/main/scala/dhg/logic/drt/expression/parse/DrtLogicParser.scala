@@ -7,7 +7,7 @@ import dhg.logic.top.expression.Variable
 import dhg.logic.drt.expression._
 import dhg.logic.drt.DrtTokens
 
-class DrtLogicParser extends BaseLogicParser[DrtExpression] {
+class DrtLogicParser(quoteChars: List[(Char, Char, Char, Boolean)] = List.empty) extends BaseLogicParser[DrtExpression](quoteChars) {
 
     override protected def makeOperatorPrecedence(): Map[Option[String], Int] = {
         val operatorPrecedence = new MapBuilder[Option[String], Int, Map[Option[String], Int]](Map[Option[String], Int]())

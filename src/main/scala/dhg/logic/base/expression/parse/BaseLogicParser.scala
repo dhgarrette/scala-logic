@@ -7,7 +7,7 @@ import dhg.logic.top.expression.Variable
 import dhg.logic.base.Tokens
 import dhg.logic.top.expression.parse._
 
-abstract class BaseLogicParser[T <: BaseExpression[T]] extends LogicParser[T] {
+abstract class BaseLogicParser[T <: BaseExpression[T]](quoteChars: List[(Char, Char, Char, Boolean)] = List.empty) extends LogicParser[T](quoteChars) {
 
     final protected val APP = Some("APP")
 

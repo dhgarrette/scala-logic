@@ -9,7 +9,7 @@ import dhg.logic.top.expression.Variable
 import dhg.logic.fol.expression._
 import dhg.logic.fol.FolTokens
 
-class FolLogicParser extends BaseLogicParser[FolExpression] {
+class FolLogicParser(quoteChars: List[(Char, Char, Char, Boolean)] = List.empty) extends BaseLogicParser[FolExpression](quoteChars) {
 
     override protected def makeOperatorPrecedence(): Map[Option[String], Int] = {
         val operatorPrecedence = new MapBuilder[Option[String], Int, Map[Option[String], Int]](Map[Option[String], Int]())

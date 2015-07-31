@@ -8,7 +8,7 @@ class DrtLogicParserTests {
   @Test
   def test() {
 
-    val p = new DrtLogicParser().parse(_)
+    val p = new DrtLogicParser(List.empty).parse(_)
 
     p("([],[])->([],[])").pprint()
     p("([y],[woman(y), ([x],[man(x)]) -> ([],[loves(x,y)])])").pprint()
