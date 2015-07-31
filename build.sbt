@@ -1,5 +1,7 @@
 name := "scala-logic"
 
+organization := "dhg"
+
 version := "0.0.2-SNAPSHOT"
 
 scalaVersion := "2.11.7"
