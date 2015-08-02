@@ -3,6 +3,7 @@ package dhg.logic.fol.expression
 import dhg.logic.top.expression.Variable
 import dhg.logic.fol._
 import dhg.logic.base.expression.BaseApplicationExpression
+import dhg.logic.base.expression.BaseApplicationExpressionUncurried
 
 case class FolApplicationExpression(override val function: FolExpression, override val argument: FolExpression)
     extends FolExpression
@@ -27,4 +28,8 @@ case class FolApplicationExpression(override val function: FolExpression, overri
 }
 
 object FolApplicationExpression {
+}
+
+object FolApplicationExpressionUncurried extends BaseApplicationExpressionUncurried[FolExpression] {
+  
 }

@@ -100,3 +100,7 @@ trait BaseApplicationExpression[T <: BaseExpression[T]] extends BaseExpression[T
   }
 
 }
+
+trait BaseApplicationExpressionUncurried[T <: BaseExpression[T]] {
+  def unapply[E <: BaseApplicationExpression[T]](e: E): Option[(T, List[T])] = Some(e.uncurry())
+}

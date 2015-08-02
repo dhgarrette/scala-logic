@@ -2,7 +2,7 @@ package dhg.logic.base
 
 trait Tokens {
 
-    val LAMBDA = "\\"; val LAMBDA_LIST = List("\\")
+    def LAMBDA = "\\"; def LAMBDA_LIST = List("\\")
 
     //Punctuation
     val DOT = "."
@@ -11,14 +11,14 @@ trait Tokens {
     val COMMA = ","
 
     //Operations
-    val NOT = "-"; val NOT_LIST = List("not", "-", "!")
-    val AND = "&"; val AND_LIST = List("and", "&", "^")
-    val OR = "|"; val OR_LIST = List("or", "|")
-    val IMP = "->"; val IMP_LIST = List("implies", "->", "=>")
-    val LIMP = "<-"; val LIMP_LIST = List("<-", "<=")
-    val IFF = "<->"; val IFF_LIST = List("iff", "<->", "<=>")
-    val EQ = "="; val EQ_LIST = List("=", "==")
-    val NEQ = "!="; val NEQ_LIST = List("!=")
+    def NOT = "-"; def NOT_LIST = List("not", "-", "!")
+    def AND = "&"; def AND_LIST = List("and", "&", "^")
+    def OR = "|"; def OR_LIST = List("or", "|")
+    def IMP = "->"; def IMP_LIST = List("implies", "->", "=>")
+    def LIMP = "<-"; def LIMP_LIST = List("<-", "<=")
+    def IFF = "<->"; def IFF_LIST = List("iff", "<->", "<=>")
+    def EQ = "="; def EQ_LIST = List("=", "==")
+    def NEQ = "!="; def NEQ_LIST = List("!=")
     
     protected def makeSymbolList(tokenList: Iterable[String]) = 
         tokenList.filter("""^[-\\\.\[\](),!&^|>=<\+:]+$""".r.findFirstIn(_).isDefined)
